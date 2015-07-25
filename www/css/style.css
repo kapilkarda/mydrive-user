@@ -1,0 +1,31 @@
+.border_none{
+	border-bottom:none !important;
+}
+.card_form{
+	width: 80% !important;
+	margin: 0 auto !important;
+}
+
+.no_background{
+	background:none !important;
+	box-shadow:none !important;
+	border:none !important;
+}
+.background_color{
+	background:#264c8c !important;
+	color:#fff !important;
+}
+.text_white{
+	color:#fff !important;
+}
+a{
+	text-decoration:none !important;
+}
+.fs-20{
+	font-size:20px;
+}
+.pull-right{
+	position:absolute;
+	right:10px;
+	top:10px;
+}
