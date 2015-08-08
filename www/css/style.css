@@ -11,12 +11,21 @@
 	box-shadow:none !important;
 	border:none !important;
 }
+.header-item{
+	text-align:center !important;
+}
 .background_color{
 	background:#264c8c !important;
 	color:#fff !important;
 }
 .text_white{
 	color:#fff !important;
+}
+.no_margin{
+	margin:0 !important;
+}
+.no_padding{
+	padding:0 !important;
 }
 a{
 	text-decoration:none !important;
@@ -28,4 +37,13 @@ a{
 	position:absolute;
 	right:10px;
 	top:10px;
+}
+
+#map {
+  width: 100%;
+  height: 100%;
+}
+
+.scroll {
+  height: 100%;
 }

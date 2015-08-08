@@ -1,27 +1,17 @@
-<ion-view>
+<ion-view view-title="Select a Routes">
 	<ion-content>
 		<div class="list">
-			<a ng-click="Check(1)" class="item item-avatar" style="padding:15px 5px 5px 65px !important; min-height:55px !important;">
-				<img src="img/1437640892_user_male2.png" style="top:5px !important;">
-				<h2>Routes1</h2>
-				<span class="item-note pull-right" style="top:15px !important;">
-				  <input type="checkbox" ng-model="checkboxModel.value1" />
-				</span>
+			<a ng-show="nodata" class="item">
+				No Routes Found !
 			</a>
-			<a ng-click="Check(2)" class="item item-avatar" style="padding:15px 5px 5px 65px !important; min-height:55px !important;">
-				<img src="img/1437640892_user_male2.png" style="top:5px !important;">
-				<h2>Routes1</h2>
-				<span class="item-note pull-right" style="top:15px !important;">
-				  <input type="checkbox" ng-model="checkboxModel.value2" />
-				</span>
-			</a>
-			<a ng-click="Check(3)" class="item item-avatar" style="padding:15px 5px 5px 65px !important; min-height:55px !important;">
-				<img src="img/1437640892_user_male2.png" style="top:5px !important;">
-				<h2>Routes1</h2>
-				<span class="item-note pull-right" style="top:15px !important;">
-				  <input type="checkbox" ng-model="checkboxModel.value3" />
-				</span>
-			</a>
+			<label ng-click="Check(CheckedRoutes.Route)" ng-repeat="Routes in RoutesLists track by $index" class="item item-radio">
+				<input type="radio" ng-model="CheckedRoutes.Route" ng-value="Routes">
+				<div class="item-content">
+				  {{Routes.attributes.name}}
+				</div>
+				<i class="radio-icon ion-checkmark"></i>
+			</label>
+			<button ng-click="GoToMap()" nav-clear menu-close ng-disabled="buttondisabled" class="button button-small button-energized" style="width:60%; margin:10% 20%;">Check My Bus</button>
 		</div>
 	</ion-content>
 </ion-view>

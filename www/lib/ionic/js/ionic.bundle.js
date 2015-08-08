@@ -54078,7 +54078,7 @@ IonicModule
     scope: true,
     compile: function(element, attr) {
       angular.isUndefined(attr.isEnabled) && attr.$set('isEnabled', 'true');
-      angular.isUndefined(attr.width) && attr.$set('width', '275');
+      angular.isUndefined(attr.width) && attr.$set('width', '200');
 
       element.addClass('menu menu-' + attr.side);
 

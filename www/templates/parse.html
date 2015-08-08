@@ -1,0 +1,95 @@
+<script type="text/javascript" src="http://www.parsecdn.com/js/parse-1.2.8.min.js"></script>
+<script>
+	function myFunction() {
+	
+		Parse.initialize("9jmo7iQvHaOETLW3a1bABEtverssotdOa85CFCBn", "XKTqDypOYCp4GojAzdW7TxHT6xMuVufCYaSgNLlH");
+
+		var username = "sweekar";
+		var email = "Test@gmail.com";
+		var password = "sweekar";
+		
+		Parse.Cloud.run('getLatestLocation', { id: 'Wx8FHRETFL' }, {
+			success: function(location) {
+				console.log(location.changed.location._latitude+" "+location.changed.location._longitude);
+				console.log(location);
+			},
+			error: function(error) {}
+		});
+		
+		/****
+		Location
+		Parse.Cloud.run('getLatestLocation', { id: 'Wx8FHRETFL' }, {
+			success: function(location) {
+				console.log(location.changed.location._latitude+" "+location.changed.location._longitude);
+				console.log(location);
+			},
+			error: function(error) {}
+		});
+		*****/
+		
+		/********
+		Routes*******
+		
+		var Route = Parse.Object.extend("Route");
+		var query = new Parse.Query(Route);
+		var pointer = new Parse.Object("Customer");
+		pointer.id = "Wx8FHRETFL" // hardcoded for now later we will change it and should be got from the app.
+		query.equalTo("customer",pointer)
+		query.find({
+			success: function (routes) {
+				console.log(routes)
+			},
+			error: function (error) {
+				// The request failed
+			}
+		});
+		
+		
+		/*******
+		// Forgot Pwd
+		Parse.User.requestPasswordReset(email, {
+			success: function(user) {
+				console.log(user);
+				alert("Yay!");
+			},
+			error: function(error) {
+				alert(error.message);
+			}
+		});
+		*******/
+		
+		/*******
+		Login
+		Parse.User.logIn(username, password, {
+			success: function(user) {
+				console.log(user);
+				alert("Yay!");
+				// Do stuff after successful login.
+			},
+			error: function(user, error) {
+				alert(error.message);
+				// The login failed. Check error to see why.
+			}
+		});
+		*******/
+		
+		/*******
+		Signup
+		var user = new Parse.User();
+        user.set("username", username);
+        user.set("password", password);
+        user.set("email", email);
+        user.signUp(null, {
+            success: function(user) {
+				console.log(user);
+                alert("Success Finally!");
+            },
+            error: function(user, error) {
+                alert(error.message);
+            }
+        });
+		*******/
+	}
+	
+	myFunction();
+</script>			

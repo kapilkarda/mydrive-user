@@ -1,7 +1,7 @@
 {
-  "name": "prottapp",
+  "name": "Tromke",
   "version": "1.0.0",
-  "description": "prottapp: An Ionic project",
+  "description": "Tromke: An Ionic project",
   "dependencies": {
     "gulp": "^3.5.6",
     "gulp-sass": "^1.3.3",

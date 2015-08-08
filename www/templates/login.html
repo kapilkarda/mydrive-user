@@ -4,14 +4,24 @@
 		   <center><img style="width:60px;"  src="img/1437640892_user_male2.png"/></center>
 		</a>
 		<div class="card card_form no_background" >
-		  <label class="item item-input">
-			<input type="text" placeholder="User Name">
-		  </label>
-		  <br />
-		  <label class="item item-input">
-			<input type="password" placeholder="Password">
-		  </label>
-			<button ui-sref="nav.home" class="button button-small button-energized" style="width:60%; margin:10% 20%;">Login</button>
+			<form ng-submit="doLoginAction()">
+				<label class="item item-input">
+					<input type="text" placeholder="Email" ng-model="login.email">
+				</label>
+				<br />
+				<label class="item item-input">
+					<input type="password" placeholder="Password" ng-model="login.password">
+				</label>
+				<button type="submit" class="button button-small button-energized" style="width:60%; margin:10% 20%;">Login</button>
+			</form>	
+		</div>
+		<div class="row no_padding">
+			<div class="col no_padding col-50 text-left">
+				<a ui-sref='forgot' class="button button-clear button-block no_margin text_white">Forgot Password?</a>
+			</div>
+			<div class="col no_padding col-50 text-right">
+				<a ui-sref='signup' class="button button-clear button-block energized no_margin">create New account</a>
+			</div>
 		</div>
 	</ion-content>
 </ion-view>

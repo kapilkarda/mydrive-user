@@ -1,11 +1,10 @@
 <ion-side-menus>
 	<ion-side-menu-content>
 		<ion-nav-bar class="no-padding background_color">
-			<ion-nav-back-button>
+			<ion-nav-back-button hide-back-button="true" class="button-clear">
 			</ion-nav-back-button>
 			<ion-nav-buttons side="left">
 				<button menu-toggle="left"  class="button button-icon icon ion-navicon text_white"></button>
-				<a ui-sref="nav.home" class="text_white fs-20" style="line-height:34px !important;"><strong>ProttApp</strong></a>
 			</ion-nav-buttons>
 			<ion-nav-buttons side="right" style="top:0 !important;right:0 !important;bottom:0 !important;"></ion-nav-buttons>
 			<ion-nav-title></ion-nav-title>
@@ -14,22 +13,21 @@
 	</ion-side-menu-content>
 
 	<ion-side-menu side="left">
-		<ion-content class="body" has-header="flase" style="overflow-Y:auto;text-align:left!important;">
-			<div class="list">
-				<a class="item item-avatar">
-				  <img src="img/1437640892_user_male2.png">
-				  <h2>Venkman</h2>
-				  <p>Back off, man. I'm a scientist.</p>
+		<ion-content class="body" has-header="flase" style="background:#555555; overflow-Y:auto;text-align:left!important;">
+			<div class="list no_background">
+				<a class="item no_background">
+				  <img src="img/1437640892_user_male2.png" style="width:30%; margin:0 35%;">
+				  <h2 class="fs-24 text-center text_white">{{username}}</h2>
 				</a>
-				<a ui-sref="nav.home" class="item item-icon-left" href="javascript:void(0);" nav-clear menu-close>
+				<a ui-sref="nav.home" class="item item-icon-left no_background text_white" href="javascript:void(0);" nav-clear menu-close>
 					<i class="icon ion-shuffle"></i>
 					Routes
 				</a>
-				<a ui-sref="nav.tromke" class="item item-icon-left" href="javascript:void(0);" nav-clear menu-close>
+				<a ui-sref="nav.tromke" class="item item-icon-left no_background text_white" href="javascript:void(0);" nav-clear menu-close>
 					<i class="icon ion-pinpoint"></i>
 					Tromke
 				</a>
-				<a ui-sref="login" class="item item-icon-left" href="javascript:void(0);" nav-clear menu-close>
+				<a ng-click="doLogoutAction()" class="item item-icon-left no_background text_white" href="javascript:void(0);" nav-clear menu-close>
 					<i class="icon ion-log-out"></i>
 					Logout
 				</a>

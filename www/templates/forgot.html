@@ -1,0 +1,16 @@
+<ion-view>
+	<ion-content style="background:url('img/logoBg.jpg') no-repeat center; background-size:cover; padding-top:100px;">
+		<a class="item border_none no_background">
+		   <center><img style="width:60px;"  src="img/1437640892_user_male2.png"/></center>
+		</a>
+		<div class="card card_form no_background" >
+			<form ng-submit="doforgotAction()">
+				<label class="item item-input">
+					<input type="text" placeholder="Email" ng-model="forgot.email">
+				</label>
+				<button type="submit" class="button button-small button-energized" style="width:60%; margin:10% 20%;">Reset Password</button>
+			</form>
+			<a ui-sref='signup' class="button button-clear button-block text_white no_margin">create New account</a>
+		</div>
+	</ion-content>
+</ion-view>
