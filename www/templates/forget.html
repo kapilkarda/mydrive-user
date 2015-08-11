@@ -1,0 +1,22 @@
+<ion-header class="bar bar-header bar-positive">
+				<a ui-sref="login">
+				<button ng-click="closeModalforget()" class="button button-clear button-icon icon ion-ios-arrow-back">
+				</button>
+				</a>
+			  <h1 class="title">Forgot Password</h1>
+			</ion-header>
+			<ion-content style="background:rgb(241, 241, 241);top:44px;">
+			<div class="list no_background">
+				<a class="item fs-30 no_background">
+					<strong>Forgot Password</strong>
+				</a>
+				<br />
+				<label class="item item-input item-stacked-label  no_background">
+					<span class="input-label"><strong>Email</strong></span>
+					<input type="text" ng-model="forgotForm.email" placeholder="Enter Your Email"  style="border:1px solid #888; width:95% !important;">
+				</label>
+				<br />
+				<button ng-click="getLink()" class="button button_blue icon-left ion-ios-person">Submit</button>
+			</div>
+			</ion-content>
+		  </ion-tab>

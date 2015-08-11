@@ -1,0 +1,24 @@
+<ion-modal-view>
+    <ion-header-bar class="bar bar-header background_color">
+	  <button ng-click="closeModalfactmodal()" class="button button-icon icon ion-chevron-left text_white"> &nbsp; Home</button>
+	  <div class="h1 title text_white">Facts</div>
+	</ion-header-bar>
+    <ion-content>
+		<div class="list">
+			<a class="item no_border">
+			  <img ng-src="{{imageUrl}}{{factImage}}" style="width: 75% !important;">
+			</a>
+			<h1 class="factmargin fs-24">{{factcampName}}</h1>
+			<h3 class="factmargin fs-20">{{factPrice}}</h3>
+			<h4 class="factmargin fs-18">{{factCity}}</h4>
+			<h4 class="factmargin fs-18">{{factwork}}</h4>
+			<h5 class="factmargin fs-18">{{factPrice}}</h5>
+			<i class="fs-18 factmargin">{{factUrl}}</i>
+			<br />
+			<br />
+			<center>
+				<button ng-click="goaddSchool(factcampName)" class="button button-positive">Add to my Schools</button>
+			</center>
+	    </div>
+    </ion-content>
+  </ion-modal-view>
