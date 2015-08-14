@@ -1,14 +1,7 @@
-// Ionic Starter App
-//https://jsfiddle.net/sweekark/65uv38wt/3/
-// angular.module is a global place for creating, registering and retrieving Angular modules
-// 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
-// the 2nd parameter is an array of 'requires'
-// 'starter.services' is found in services.js
-// 'starter.controllers' is found in controllers.js
-
 var db = null;
 var check=1;
 var isOffline_main="";
+
 angular.module('Tromke', ['ionic', 'nav.controllers', 'home.controllers','login.controllers', 'tromke.controllers', 'signup.controllers', 'forgot.controllers'])
 
 .run(function($ionicPlatform, $rootScope, $state, $localstorage, $location) {
@@ -36,7 +29,7 @@ angular.module('Tromke', ['ionic', 'nav.controllers', 'home.controllers','login.
 			
 			var userId = $localstorage.get("userid");
 			if(userId!=undefined && userId!=null && userId!="undefined" && userId!="null" && userId!="0" && userId!=""){
-				$state.go('nav.home');
+				$state.go('nav.tromke');
 			}
 			
 		}catch(err){
@@ -87,7 +80,6 @@ angular.module('Tromke', ['ionic', 'nav.controllers', 'home.controllers','login.
 		controller: 'signupCtrl'
   })
   .state('nav', {
-		cache: false,
 		url: '/nav',
 		templateUrl: 'templates/nav.html',
 		abstract: true,
@@ -113,7 +105,6 @@ angular.module('Tromke', ['ionic', 'nav.controllers', 'home.controllers','login.
 		}
 	}
   })
- 
   // if none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise('/login');
 

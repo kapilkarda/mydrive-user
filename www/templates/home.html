@@ -4,14 +4,15 @@
 			<a ng-show="nodata" class="item">
 				No Routes Found !
 			</a>
-			<label ng-click="Check(CheckedRoutes.Route)" ng-repeat="Routes in RoutesLists track by $index" class="item item-radio">
+
+			<label ng-repeat="Routes in RoutesLists track by $index" ng-click="Check(CheckedRoutes.Route)" class="item item-radio">
 				<input type="radio" ng-model="CheckedRoutes.Route" ng-value="Routes">
 				<div class="item-content">
-				  {{Routes.attributes.name}}
+				  {{Routes.name}}
 				</div>
 				<i class="radio-icon ion-checkmark"></i>
 			</label>
-			<button ng-click="GoToMap()" nav-clear menu-close ng-disabled="buttondisabled" class="button button-small button-energized" style="width:60%; margin:10% 20%;">Check My Bus</button>
+			<button nav-clear menu-close ng-click="GoToMap()" ng-disabled="buttondisabled" class="button button-small button-energized" style="width:60%; margin:10% 20%;">Check My Bus</button>
 		</div>
 	</ion-content>
 </ion-view>

@@ -1,6 +1,6 @@
 angular.module('home.controllers', [])
 
-.controller('homeCtrl', function($scope, $state, $ionicPlatform, $ionicPopup, $localstorage, $ionicLoading, $timeout) {
+.controller('homeCtrl', function($scope, $state, $ionicPlatform, $ionicPopup, $localstorage, $ionicLoading, $timeout, $ionicHistory) {
 	$ionicPlatform.ready(function(){
 		try{ 	
 			$scope.userid=$localstorage.get("userid");
@@ -8,9 +8,16 @@ angular.module('home.controllers', [])
 			$scope.useremail=$localstorage.get("useremail");
 			$scope.RouteId=$localstorage.get("RouteId");
 			$scope.buttondisabled=true;
+
 			Parse.initialize("9jmo7iQvHaOETLW3a1bABEtverssotdOa85CFCBn", "XKTqDypOYCp4GojAzdW7TxHT6xMuVufCYaSgNLlH");
 			$scope.userid="Wx8FHRETFL";
+			
 			$scope.CheckedRoutes={};
+
+			$ionicHistory.nextViewOptions({
+		       disableBack: true
+		    });
+			
 			// An alert dialog
 			$scope.showAlert = function(msg) {
 				var alertPopup = $ionicPopup.alert({
@@ -24,8 +31,7 @@ angular.module('home.controllers', [])
 			
 			$scope.RoutesLists = [];
 			$scope.GetRoute=function(){
-				$scope.nodata=true;
-				$ionicLoading.show();
+				//$scope.nodata=true;
 				var Route = Parse.Object.extend("Route");
 				var query = new Parse.Query(Route);
 				var pointer = new Parse.Object("Customer");
@@ -35,10 +41,12 @@ angular.module('home.controllers', [])
 					success: function (routes) {
 						$scope.nodata=false;
 						$ionicLoading.hide();
-						$scope.RoutesLists = routes;
+						$localstorage.set('routes', JSON.stringify(routes));
+						$scope.RoutesLists = JSON.parse($localstorage.get('routes'));
 					},
 					error: function (error) {
 						$ionicLoading.hide();
+						console.log(error);
 						// The request failed
 					}
 				});
@@ -46,16 +54,26 @@ angular.module('home.controllers', [])
 					$ionicLoading.hide();
 				}, 3000);
 			}
-			$scope.GetRoute();
+
+
+			var jsonroutes = $localstorage.get('routes');
+			if(jsonroutes!=undefined && jsonroutes!="undefined" && jsonroutes!=null && jsonroutes!="null" && jsonroutes!=""){
+				$scope.nodata=false;
+				$scope.RoutesLists = JSON.parse(jsonroutes);
+				$scope.GetRoute();
+			}else{
+				$ionicLoading.show();
+				$scope.GetRoute();
+			}
 			
 			$scope.Check= function(id){
 				$scope.buttondisabled=false;
 			}
 			
 			$scope.GoToMap= function(){
-				$localstorage.set("RouteName", $scope.CheckedRoutes.Route.attributes.name);
-				$localstorage.set("RouteId", $scope.CheckedRoutes.Route.id);
-				$localstorage.set("DriverId", $scope.CheckedRoutes.Route.attributes.driver.id);
+				$localstorage.set("RouteName", $scope.CheckedRoutes.Route.name);
+				$localstorage.set("RouteId", $scope.CheckedRoutes.Route.objectId);
+				$localstorage.set("DriverId", $scope.CheckedRoutes.Route.driver.objectId);
 				$state.go('nav.tromke');
 			}
 

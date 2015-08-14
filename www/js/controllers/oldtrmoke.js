@@ -1,5 +1,5 @@
 angular.module('tromke.controllers', [])
- .controller('tromkeCtrl', function($scope, $state, $ionicPlatform, $ionicLoading, $compile, $localstorage, $interval, $ionicHistory) {
+ .controller('tromkeCtrl', function($scope, $state, $ionicPlatform, $ionicLoading, $compile, $localstorage, $interval) {
  	$ionicPlatform.ready(function(){
 		try{	
 
@@ -7,10 +7,7 @@ angular.module('tromke.controllers', [])
 			var markers=[];
 			var markers1=[];
 			var loadonetime=1;
-			var map;
 
-			$ionicHistory.clearHistory();
-			
 			$scope.RouteId="";
 			$scope.DriverId="";
 			$scope.driverlat="";
@@ -39,7 +36,7 @@ angular.module('tromke.controllers', [])
 			$scope.GetLatLong=function(check){
 				Parse.Cloud.run('getLatestLocation', { route: $scope.RouteId, customer:$scope.userid ,driver: $scope.DriverId }, {
 					success: function(location) {
-						if(location.trip=="undefined" || location.trip==undefined){
+						if(location.trip){
 							$scope.driverlat = location.changed.location._latitude;
 							$scope.driverlong = location.changed.location._longitude;
 							if (navigator.geolocation) {
@@ -61,8 +58,7 @@ angular.module('tromke.controllers', [])
 									mapTypeId: google.maps.MapTypeId.ROADMAP,
 								};
 								bounds = new google.maps.LatLngBounds();
-
-								map = new google.maps.Map(document.getElementById("map"), myOptions1);
+								map = new google.maps.Map(document.getElementById("map"), myOptions1);	
 							}
 						}else{
 							$scope.noroute = false;
@@ -110,6 +106,45 @@ angular.module('tromke.controllers', [])
 			$scope.googleMapLoad = function(lat,lng, isloc){
 				try{
 
+					if($scope.loadAgain==1){
+						var GLOBE_WIDTH = 256; // a constant in Google's map projection
+						var minLat = $scope.driverlat;
+						var minLng= $scope.driverlong;
+						var maxLat = lat;
+						var maxLng = lng;
+
+						if(minLat>maxLat){
+							minLat = lat;
+							maxLat = $scope.driverlat;
+						}
+
+						if(minLng>maxLng){
+							minLng = lng;
+							maxLng = $scope.driverlong;
+						}
+
+						var west = minLng;
+						var east = maxLng;
+						var north = maxLat;
+						var south = minLat;
+
+						var delta = 0;
+						var angle = east - west;
+						if (angle < 0) {
+						    angle += 360;
+						}
+						var angle2 = north - south;
+						if (angle2 > angle){
+							angle = angle2;
+							delta = 3;
+						}
+						var zoomfactor = Math.round(Math.log(960 * 360 / angle / GLOBE_WIDTH) / Math.LN2);
+						
+						if(map){
+							map.setZoom(zoomfactor);
+						}
+					}
+					
 					$scope.isloc = isloc;
 					$scope.loadMarkerPoint($scope.driverlat, $scope.driverlong);
 
@@ -171,9 +206,9 @@ angular.module('tromke.controllers', [])
 					if($scope.loadAgain==1){
 						map.fitBounds(bounds);
 					}
+
 				}
 			}
-
 
 			var boundsListener = google.maps.event.addListener((map), 'bounds_changed', function(event) {
 		        this.setZoom(14);
@@ -199,7 +234,7 @@ angular.module('tromke.controllers', [])
 			}
 
 		}catch(err){
-			console.log(err.message);
+			alert(err.message);
 		}
 	});	
  });

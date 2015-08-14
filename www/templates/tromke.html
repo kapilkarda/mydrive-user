@@ -1,5 +1,10 @@
 <ion-view view-title="{{RouteName}}">
 	<ion-content>
-      <div id="map" data-tap-disabled="true"></div>
+		<div ng-hide="noroute" class="card">
+		 	<div class="item item-text-wrap">
+		    	Bus Still Not Stated.
+		  	</div>
+		</div>
+     	<div id="map" data-tap-disable="true"></div>
     </ion-content>
 </ion-view>
