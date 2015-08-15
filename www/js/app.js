@@ -20,7 +20,7 @@ angular.module('Tromke', ['ionic', 'nav.controllers', 'home.controllers','login.
 			
 			$ionicPlatform.registerBackButtonAction(function () {
 				var hashvalue = $location.url();
-				if(hashvalue=="/nav/home" || hashvalue=="/login" || hashvalue=="/signup" || hashvalue=="/forgot"){
+				if(hashvalue=="/nav/home" || hashvalue=="/nav/tromke" || hashvalue=="/login" || hashvalue=="/signup" || hashvalue=="/forgot"){
 					navigator.app.exitApp();
 				} else {
 					navigator.app.backHistory();
@@ -28,8 +28,13 @@ angular.module('Tromke', ['ionic', 'nav.controllers', 'home.controllers','login.
 			}, 100);
 			
 			var userId = $localstorage.get("userid");
+			var route_id = $localstorage.get("RouteId");
 			if(userId!=undefined && userId!=null && userId!="undefined" && userId!="null" && userId!="0" && userId!=""){
-				$state.go('nav.tromke');
+				if(route_id!=undefined && route_id!=null && route_id!="undefined" && route_id!="null" && route_id!="0" && route_id!=""){
+					$state.go('nav.tromke');
+				}else{
+					$state.go('nav.home');
+				}
 			}
 			
 		}catch(err){
@@ -80,6 +85,7 @@ angular.module('Tromke', ['ionic', 'nav.controllers', 'home.controllers','login.
 		controller: 'signupCtrl'
   })
   .state('nav', {
+		cache: false,
 		url: '/nav',
 		templateUrl: 'templates/nav.html',
 		abstract: true,

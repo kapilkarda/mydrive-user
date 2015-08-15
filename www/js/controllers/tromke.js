@@ -18,23 +18,25 @@ angular.module('tromke.controllers', [])
 			$scope.userPositionlat="";
 			$scope.userPositionlong="";
 			$scope.isloc = "";
-			$scope.userid=$localstorage.get("userid");
-			$scope.username=$localstorage.get("username");
-			$scope.useremail=$localstorage.get("useremail");
-			$scope.RouteId=$localstorage.get("RouteId");
-			$scope.RouteName=$localstorage.get("RouteName");
-			$scope.DriverId=$localstorage.get("DriverId");
+			$scope.userid = $localstorage.get("userid");
+			$scope.username = $localstorage.get("username");
+			$scope.useremail = $localstorage.get("useremail");
+			$scope.RouteId = $localstorage.get("RouteId");
+			$scope.RouteName = $localstorage.get("RouteName");
+			$scope.DriverId = $localstorage.get("DriverId");
 			$scope.noroute = true;
+	
 
 			Parse.initialize("9jmo7iQvHaOETLW3a1bABEtverssotdOa85CFCBn", "XKTqDypOYCp4GojAzdW7TxHT6xMuVufCYaSgNLlH");
 			
-			$scope.userid="Wx8FHRETFL";		
+			//$scope.userid="Wx8FHRETFL";		
 
 
 			// Get Location
 			$scope.driverlat = "";
 			$scope.driverlong = "";
 			$scope.loadAgain = 0;
+
 
 			$scope.GetLatLong=function(check){
 				Parse.Cloud.run('getLatestLocation', { route: $scope.RouteId, customer:$scope.userid ,driver: $scope.DriverId }, {
@@ -51,6 +53,7 @@ angular.module('tromke.controllers', [])
 							}
 
 							if(check==1){
+
 								$scope.loadAgain = 1;
 								var centerPos = new google.maps.LatLng($scope.driverlat, $scope.driverlong);
 								var myOptions1 = {
@@ -64,6 +67,7 @@ angular.module('tromke.controllers', [])
 
 								map = new google.maps.Map(document.getElementById("map"), myOptions1);
 							}
+
 						}else{
 							$scope.noroute = false;
 							$ionicLoading.hide();
@@ -82,12 +86,7 @@ angular.module('tromke.controllers', [])
 					$scope.userPositionlong=position.coords.longitude;	
 					
 					$scope.googleMapLoad(position.coords.latitude, position.coords.longitude, 1);	
-
-					$interval(function(){
-						$scope.loadAgain = 0;
-						$scope.GetLatLong(0);
-					},15000);
-									
+					
 				}catch(err){
 					alert(err.message);
 				}	
@@ -95,24 +94,40 @@ angular.module('tromke.controllers', [])
 		
 			function error(msg) {
 				alert("Please Enable your GPS");
-				$scope.googleMapLoad(12.9667, 77.5667, 0);
+				$scope.googleMapLoad(0);
 			}
 			
+			function ClearAllIntervals() {
+				var i = $localstorage.get("interval");
+				if(i!="undefined" && i!=undefined && i!=null && i!="null" && i!=""){
+			  		window.clearInterval(i);
+			  	}
+			}
+
+			ClearAllIntervals();
+
 			if($scope.RouteId!=undefined && $scope.RouteId!=null && $scope.RouteId!="undefined" && $scope.RouteId!="null" && $scope.RouteId!="0" && $scope.RouteId!="" && $scope.DriverId!=undefined && $scope.DriverId!=null && $scope.DriverId!="undefined" && $scope.DriverId!="null" && $scope.DriverId!="0" && $scope.DriverId!=""){
 				$ionicLoading.show();
 				$scope.GetLatLong(1);
+
+
+				var getInterval = setInterval(function(){
+					$scope.loadAgain = 0;
+					$scope.GetLatLong(0);
+				},15000);
+
+				$localstorage.set("interval", getInterval);
+
 			}else{
 				//alert("Select Route for check bus");
 				$state.go('nav.home');
 			}
 
 
-			$scope.googleMapLoad = function(lat,lng, isloc){
+			$scope.googleMapLoad = function(isloc){
 				try{
-
 					$scope.isloc = isloc;
 					$scope.loadMarkerPoint($scope.driverlat, $scope.driverlong);
-
 				}catch(err){
 					console.log(err.message);
 				}

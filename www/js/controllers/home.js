@@ -9,6 +9,15 @@ angular.module('home.controllers', [])
 			$scope.RouteId=$localstorage.get("RouteId");
 			$scope.buttondisabled=true;
 
+			function ClearAllIntervals() {
+				var i = $localstorage.get("interval");
+				if(i!="undefined" && i!=undefined && i!=null && i!="null" && i!=""){
+			  		window.clearInterval(i);
+			  	}
+			}
+			ClearAllIntervals();
+
+
 			Parse.initialize("9jmo7iQvHaOETLW3a1bABEtverssotdOa85CFCBn", "XKTqDypOYCp4GojAzdW7TxHT6xMuVufCYaSgNLlH");
 			$scope.userid="Wx8FHRETFL";
 			
@@ -17,6 +26,8 @@ angular.module('home.controllers', [])
 			$ionicHistory.nextViewOptions({
 		       disableBack: true
 		    });
+			
+			$ionicHistory.clearHistory();
 			
 			// An alert dialog
 			$scope.showAlert = function(msg) {

@@ -14,6 +14,7 @@ angular.module('login.controllers', [])
 				password = $scope.login.password;
 				Parse.User.logIn(username, password, {
 					success: function(user) {
+						console.log(user);
 						$ionicLoading.hide();
 						$localstorage.set("userid", user.id);
 						$localstorage.set("username", user.attributes.username);
