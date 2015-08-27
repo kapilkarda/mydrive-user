@@ -2,7 +2,7 @@ var db = null;
 var check=1;
 var isOffline_main="";
 
-angular.module('Tromke', ['ionic', 'nav.controllers', 'home.controllers','login.controllers', 'tromke.controllers', 'signup.controllers', 'forgot.controllers'])
+angular.module('Tromke', ['ionic', 'ngCordova.plugins', 'nav.controllers', 'home.controllers','login.controllers', 'tromke.controllers', 'signup.controllers', 'forgot.controllers'])
 
 .run(function($ionicPlatform, $rootScope, $state, $localstorage, $location) {
 	$ionicPlatform.ready(function() {
@@ -26,17 +26,20 @@ angular.module('Tromke', ['ionic', 'nav.controllers', 'home.controllers','login.
 					navigator.app.backHistory();
 				}
 			}, 100);
-			
-			var userId = $localstorage.get("userid");
-			var route_id = $localstorage.get("RouteId");
-			if(userId!=undefined && userId!=null && userId!="undefined" && userId!="null" && userId!="0" && userId!=""){
-				if(route_id!=undefined && route_id!=null && route_id!="undefined" && route_id!="null" && route_id!="0" && route_id!=""){
-					$state.go('nav.tromke');
-				}else{
-					$state.go('nav.home');
-				}
-			}
-			
+
+
+			cordova.plugins.diagnostic.isLocationEnabled(function(enabled){
+			    if(enabled){
+
+			    }else{
+			    	alert("Please enable your location");
+			    	cordova.plugins.diagnostic.switchToLocationSettings();
+			    }
+			}, function(error){
+			    alert("The following error occurred: "+error);
+			});
+
+
 		}catch(err){
 			alert(err.message);
 		}

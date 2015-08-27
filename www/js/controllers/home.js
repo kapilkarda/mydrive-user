@@ -68,16 +68,35 @@ angular.module('home.controllers', [])
 
 
 			var jsonroutes = $localstorage.get('routes');
+
 			if(jsonroutes!=undefined && jsonroutes!="undefined" && jsonroutes!=null && jsonroutes!="null" && jsonroutes!=""){
 				$scope.nodata=false;
+
+				$ionicLoading.show();
 				$scope.RoutesLists = JSON.parse(jsonroutes);
 				$scope.GetRoute();
+				var routeIDTest = $localstorage.get("RouteId");
+
+				setTimeout(function(){
+					
+					$scope.buttondisabled=false;
+					
+					$scope.CheckedRoutes.Route = JSON.parse($localstorage.get("routeChecked"));
+					
+					setTimeout(function(){
+						document.getElementById("radioMain" + routeIDTest).checked = true;
+						$ionicLoading.hide();
+					},1000);
+
+				},100);
+
 			}else{
 				$ionicLoading.show();
 				$scope.GetRoute();
 			}
 			
 			$scope.Check= function(id){
+				$localstorage.set("routeChecked",JSON.stringify(id));
 				$scope.buttondisabled=false;
 			}
 			

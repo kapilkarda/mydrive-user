@@ -1,12 +1,12 @@
-<ion-view view-title="Select a Routes">
+<ion-view view-title="Select your route">
 	<ion-content>
 		<div class="list">
 			<a ng-show="nodata" class="item">
 				No Routes Found !
 			</a>
-
+		
 			<label ng-repeat="Routes in RoutesLists track by $index" ng-click="Check(CheckedRoutes.Route)" class="item item-radio">
-				<input type="radio" ng-model="CheckedRoutes.Route" ng-value="Routes">
+				<input type="radio" id="radioMain{{Routes.objectId}}" ng-model="CheckedRoutes.Route" ng-value="Routes">
 				<div class="item-content">
 				  {{Routes.name}}
 				</div>
