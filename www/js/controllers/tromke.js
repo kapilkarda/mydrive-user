@@ -39,32 +39,13 @@ angular.module('tromke.controllers', [])
 			$scope.mapStatus = 0;
 
 
-			/*function success(position) {
-				try{	
-
-					alert("success")
-					
-					$scope.userPositionlat=position.coords.latitude;
-					$scope.userPositionlong=position.coords.longitude;	
-					
-					$scope.googleMapLoad(1);	
-					
-				}catch(err){
-					alert(err.message);
-				}	
-			}
-		
-			function error(msg) {
-				alert("Error");
-				alert("Please enable your location");
-				$scope.googleMapLoad(0);
-			}*/
-			
-
 			$scope.GetLatLong=function(check){
 				Parse.Cloud.run('getLatestLocation', { route: $scope.RouteId, customer:$scope.userid ,driver: $scope.DriverId }, {
 					success: function(location) {
 						if(location.trip=="undefined" || location.trip==undefined){
+
+							$scope.noroute = true;
+
 							$scope.driverlat = location.changed.location._latitude;
 							$scope.driverlong = location.changed.location._longitude;
 
@@ -131,12 +112,11 @@ angular.module('tromke.controllers', [])
 				var getInterval = setInterval(function(){
 					$scope.loadAgain = 0;
 					$scope.GetLatLong(0);
-				},15000);
+				},5000);
 
 				$localstorage.set("interval", getInterval);
 
 			}else{
-				//alert("Select Route for check bus");
 				$state.go('nav.home');
 			}
 
@@ -236,11 +216,6 @@ angular.module('tromke.controllers', [])
 			  	markers1 = [];
 			}
 
-
-			/*var boundsListener = google.maps.event.addListener((map), 'bounds_changed', function(event) {
-		        this.setZoom(14);
-		        google.maps.event.removeListener(boundsListener);
-		    });*/
 
 		}catch(err){
 			console.log(err.message);
