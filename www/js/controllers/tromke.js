@@ -49,7 +49,7 @@ angular.module('tromke.controllers', [])
 							$scope.driverlat = location.changed.location._latitude;
 							$scope.driverlong = location.changed.location._longitude;
 
-							var posOptions = {timeout: 10000, enableHighAccuracy: false};
+							/*var posOptions = {timeout: 10000, enableHighAccuracy: false};
 						 	$cordovaGeolocation
 						    	.getCurrentPosition(posOptions)
 						    	.then(function (position) {
@@ -60,7 +60,10 @@ angular.module('tromke.controllers', [])
 						   		}, function(err) {
 						   			$scope.googleMapLoad(0);
 						   			$ionicLoading.hide();
-						    	});
+						    	});*/
+
+						    $scope.googleMapLoad(0);
+						   	$ionicLoading.hide();
 
 							if($scope.loadAgain=="0" || $scope.loadAgain==0){
 								if($scope.mapStatus==0){									
@@ -68,14 +71,14 @@ angular.module('tromke.controllers', [])
 									$scope.mapStatus=1;
 									var centerPos = new google.maps.LatLng($scope.driverlat, $scope.driverlong);
 									var myOptions1 = {
-										zoom: 7,
+										zoom: 16,
 										center: centerPos,
 										mapTypeControl: false,
 										navigationControlOptions: {style: google.maps.NavigationControlStyle.SMALL},
 										mapTypeId: google.maps.MapTypeId.ROADMAP,
 									};
 
-									bounds = new google.maps.LatLngBounds();
+									//bounds = new google.maps.LatLngBounds();
 
 									map = new google.maps.Map(document.getElementById("map"), myOptions1);
 
@@ -122,12 +125,12 @@ angular.module('tromke.controllers', [])
 
 
 			$scope.googleMapLoad = function(isloc){
-				try{
+				//try{
 					$scope.isloc = isloc;
 					$scope.loadMarkerPoint($scope.driverlat, $scope.driverlong);
-				}catch(err){
+				/*}catch(err){
 					console.log(err.message);
-				}
+				}*/
 			}
 
 			$scope.loadMarkerPoint = function(lat,lng){
@@ -135,16 +138,16 @@ angular.module('tromke.controllers', [])
 				
 				markers = [];
 				
-				if($scope.isloc==0){
+				//if($scope.isloc==0){
 					markers = [
-						['Driver are Here', $scope.driverlat,$scope.driverlong,'img/car.jpg']
+						['Driver are Here', $scope.driverlat,$scope.driverlong,'img/car1.png']
 					];	
 
 					// Info Window Content
 					var infoWindowContent = [
 						['<div id="content"><h1 id="firstHeading" style="font-size:20px;" class="firstHeading">Driver Position</h1></div>']
 					];
-				}else{
+				/*}else{
 					markers = [
 						['You are Here!', $scope.userPositionlat,$scope.userPositionlong,'img/usermarker.png'],
 						['Driver are Here', $scope.driverlat,$scope.driverlong,'img/car.jpg']
@@ -155,21 +158,21 @@ angular.module('tromke.controllers', [])
 						['<div id="content"><h1 id="firstHeading" style="font-size:20px;" class="firstHeading">Your Position</h1></div>'],
 						['<div id="content"><h1 id="firstHeading" style="font-size:20px;" class="firstHeading">Driver Position</h1></div>']
 					];
-				}
+				}*/
 			
 				// Display multiple markers on a map
-				var infoWindow = new google.maps.InfoWindow(), marker, i;
+				var infoWindow = new google.maps.InfoWindow(), marker;
 
 
 				deleteMarkers();
 
 				// Loop through our array of markers & place each one on the map  
-				for( i = 0; i < markers.length; i++ ) {
+				for(var i = 0; i < markers.length; i++ ) {
 
 					loadonetime=0;
 
 					var position = new google.maps.LatLng(markers[i][1], markers[i][2]);
-					bounds.extend(position);
+					//bounds.extend(position);
 
 					var icon = markers[i][3];
 					var title = markers[i][0];
@@ -181,20 +184,29 @@ angular.module('tromke.controllers', [])
 						title: markers[i][0]
 					});
 
+					setTimeout(function(){
+						map.setCenter(position);
+					},1000);
+					
 					markers1.push(marker);
+
+					pushMarker(marker, infoWindowContent[i][0]);
 	
 					// Allow each marker to have an info window
-					google.maps.event.addListener(marker, 'click', (function(marker, i) {
-						return function() {
-							infoWindow.setContent(infoWindowContent[i][0]);
-							infoWindow.open(map, marker);
-						}
-					})(marker, i));
-
+					
 					if($scope.loadAgain==1){
-						map.fitBounds(bounds);
+						//map.fitBounds(bounds);
 					}
 				}
+			}
+
+			function pushMarker(marker, content){
+				google.maps.event.addListener(marker, 'click', (function(marker, content){
+					return function() {
+						infoWindow.setContent(content);
+						infoWindow.open(map, marker);
+					}
+				})(marker, content));
 			}
 
 
