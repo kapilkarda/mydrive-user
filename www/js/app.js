@@ -4,7 +4,7 @@ var isOffline_main="";
 
 angular.module('Tromke', ['ionic', 'ngCordova.plugins', 'nav.controllers', 'home.controllers','login.controllers', 'tromke.controllers', 'signup.controllers', 'forgot.controllers'])
 
-.run(function($ionicPlatform, $rootScope, $state, $localstorage, $location) {
+.run(function($ionicPlatform, $rootScope, $state, $localstorage, $location, $cordovaNetwork) {
 	$ionicPlatform.ready(function() {
 		try{
 			// Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
@@ -17,6 +17,17 @@ angular.module('Tromke', ['ionic', 'ngCordova.plugins', 'nav.controllers', 'home
 			  // org.apache.cordova.statusbar required
 			  StatusBar.styleLightContent();
 			}
+
+			// var type = $cordovaNetwork.getNetwork();
+   //          var isOffline = $cordovaNetwork.isOffline();
+   //          if(isOffline==true){
+   //              alert("Internet is not connected");
+   //              if(navigator.app){
+   //                  navigator.app.exitApp();
+   //              }else if(navigator.device){
+   //                  navigator.device.exitApp();
+   //              }
+   //          }
 			
 			$ionicPlatform.registerBackButtonAction(function () {
 				var hashvalue = $location.url();
@@ -115,6 +126,16 @@ angular.module('Tromke', ['ionic', 'ngCordova.plugins', 'nav.controllers', 'home
 	}
   })
   // if none of the above states are matched, use this as the fallback
-  $urlRouterProvider.otherwise('/login');
 
+  	var userId = localStorage.getItem("userid");
+	var route_id = localStorage.getItem("RouteId");
+	if(userId!=undefined && userId!=null && userId!="undefined" && userId!="null" && userId!="0" && userId!=""){
+		if(route_id!=undefined && route_id!=null && route_id!="undefined" && route_id!="null" && route_id!="0" && route_id!=""){
+			$urlRouterProvider.otherwise('/nav/tromke');
+		}else{
+			$urlRouterProvider.otherwise('/nav/home');
+		}
+	}else{
+		$urlRouterProvider.otherwise('/login');
+	}
 });

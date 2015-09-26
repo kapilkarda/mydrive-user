@@ -37,14 +37,13 @@ angular.module('tromke.controllers', [])
 			$scope.driverlong = "";
 			$scope.loadAgain = 0;
 			$scope.mapStatus = 0;
+			$scope.noroute=false;
 
 
 			$scope.GetLatLong=function(check){
 				Parse.Cloud.run('getLatestLocation', { route: $scope.RouteId, customer:$scope.userid ,driver: $scope.DriverId }, {
 					success: function(location) {
 						if(location.trip=="undefined" || location.trip==undefined){
-
-							$scope.noroute = true;
 
 							$scope.driverlat = location.changed.location._latitude;
 							$scope.driverlong = location.changed.location._longitude;
@@ -61,41 +60,52 @@ angular.module('tromke.controllers', [])
 						   			$scope.googleMapLoad(0);
 						   			$ionicLoading.hide();
 						    	});*/
+							
+							if($scope.noroute==false){
+								$scope.noroute = true;
+								
+								document.getElementById('map').style.visibility = "visible";
 
-						    $scope.googleMapLoad(0);
-						   	$ionicLoading.hide();
-
-							if($scope.loadAgain=="0" || $scope.loadAgain==0){
-								if($scope.mapStatus==0){									
-									$scope.loadAgain = 1;
-									$scope.mapStatus=1;
-									var centerPos = new google.maps.LatLng($scope.driverlat, $scope.driverlong);
-									var myOptions1 = {
-										zoom: 16,
-										center: centerPos,
-										mapTypeControl: false,
-										navigationControlOptions: {style: google.maps.NavigationControlStyle.SMALL},
-										mapTypeId: google.maps.MapTypeId.ROADMAP,
-									};
-
-									//bounds = new google.maps.LatLngBounds();
-
-									map = new google.maps.Map(document.getElementById("map"), myOptions1);
-
-								}
+								loadMap();
+							}else{
+								$scope.loadMarkerPoint($scope.driverlat, $scope.driverlong);
+								$scope.noroute = true;
 							}
 
 						}else{
 							$scope.noroute = false;
+
+							document.getElementById('map').style.visibility = "hidden";
+
 							$ionicLoading.hide();
 							$scope.mapStatus=0;
 						}
 					},
 					error: function(error) {
 						$scope.noroute = false;
+
+						document.getElementById('map').style.visibility = "hidden";
+
 						$ionicLoading.hide();
 					}
 				});
+			}
+
+
+			function loadMap(){
+				var centerPos = new google.maps.LatLng($scope.driverlat, $scope.driverlong);
+				var myOptions1 = {
+					zoom: 16,
+					center: centerPos,
+					mapTypeControl: false,
+					navigationControlOptions: {style: google.maps.NavigationControlStyle.SMALL},
+					mapTypeId: google.maps.MapTypeId.ROADMAP,
+				};
+				//bounds = new google.maps.LatLngBounds();
+				map = new google.maps.Map(document.getElementById("map"), myOptions1);
+				$scope.loadMarkerPoint($scope.driverlat, $scope.driverlong);
+
+				console.log("Load Map");
 			}
 
 			function ClearAllIntervals() {
@@ -113,6 +123,7 @@ angular.module('tromke.controllers', [])
 				$scope.GetLatLong(1);
 
 				var getInterval = setInterval(function(){
+					console.log("data");
 					$scope.loadAgain = 0;
 					$scope.GetLatLong(0);
 				},5000);
@@ -124,45 +135,21 @@ angular.module('tromke.controllers', [])
 			}
 
 
-			$scope.googleMapLoad = function(isloc){
-				//try{
-					$scope.isloc = isloc;
-					$scope.loadMarkerPoint($scope.driverlat, $scope.driverlong);
-				/*}catch(err){
-					console.log(err.message);
-				}*/
-			}
+			// Display multiple markers on a map
+			var infoWindow = new google.maps.InfoWindow(), marker;
 
 			$scope.loadMarkerPoint = function(lat,lng){
-				var isloc = $scope.isloc;
 				
 				markers = [];
 				
-				//if($scope.isloc==0){
-					markers = [
-						['Driver are Here', $scope.driverlat,$scope.driverlong,'img/car1.png']
-					];	
+				markers = [
+					['Driver are Here', $scope.driverlat,$scope.driverlong,'img/car1.png']
+				];	
 
-					// Info Window Content
-					var infoWindowContent = [
-						['<div id="content"><h1 id="firstHeading" style="font-size:20px;" class="firstHeading">Driver Position</h1></div>']
-					];
-				/*}else{
-					markers = [
-						['You are Here!', $scope.userPositionlat,$scope.userPositionlong,'img/usermarker.png'],
-						['Driver are Here', $scope.driverlat,$scope.driverlong,'img/car.jpg']
-					];	
-
-					// Info Window Content
-					var infoWindowContent = [
-						['<div id="content"><h1 id="firstHeading" style="font-size:20px;" class="firstHeading">Your Position</h1></div>'],
-						['<div id="content"><h1 id="firstHeading" style="font-size:20px;" class="firstHeading">Driver Position</h1></div>']
-					];
-				}*/
+				var infoWindowContent = [
+					['<div id="content"><h1 id="firstHeading" style="font-size:20px;" class="firstHeading">Driver Position</h1></div>']
+				];
 			
-				// Display multiple markers on a map
-				var infoWindow = new google.maps.InfoWindow(), marker;
-
 
 				deleteMarkers();
 
@@ -198,6 +185,8 @@ angular.module('tromke.controllers', [])
 						//map.fitBounds(bounds);
 					}
 				}
+
+				$ionicLoading.hide();
 			}
 
 			function pushMarker(marker, content){
